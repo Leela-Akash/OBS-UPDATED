@@ -1,0 +1,81 @@
+.deposit-withdraw-container {
+  max-width: 450px;
+  margin: 3rem auto;
+  padding: 2rem 2.5rem;
+  background: #f8f9fb;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  font-family: "Inter", sans-serif;
+  text-align: center;
+}
+
+.deposit-withdraw-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #1e2a38;
+}
+
+.balance {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid #d1d8e0;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+input[type="number"]:focus {
+  border-color: #2575fc;
+  box-shadow: 0 0 8px rgba(37, 117, 252, 0.25);
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.button-group button {
+  flex: 1;
+  padding: 0.8rem 0;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(135deg, #2575fc, #6a11cb);
+  transition: all 0.3s ease;
+}
+
+.button-group button:hover {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  transform: translateY(-2px);
+}
+
+.success-message {
+  color: #27ae60;
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+@media (max-width: 480px) {
+  .button-group {
+    flex-direction: column;
+  }
+}

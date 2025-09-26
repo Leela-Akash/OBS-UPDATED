@@ -1,0 +1,85 @@
+/* Navbar container */
+.admin-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #003366; 
+  padding: 15px 25px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Logo / Brand */
+.admin-navbar .logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* Links container */
+.admin-navbar .nav-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Links */
+.admin-navbar .nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.admin-navbar .nav-links a:hover,
+.admin-navbar .nav-links a.active {
+  background-color: #66bb6a;
+  color: #fff;
+}
+
+/* Logout icon only */
+.admin-navbar .logout-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  transition: all 0.3s ease;
+}
+
+.admin-navbar .logout-btn:hover {
+  color: #b71c1c;
+}
+/* Profile avatar in navbar */
+.navbar-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid #fff;
+}
+
+.navbar-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}

@@ -1,0 +1,9 @@
+package com.banking.sdp.backend.service;
+
+import com.banking.sdp.backend.model.Customer;
+
+public interface CustomerService {
+    String registerCustomer(Customer customer);
+    Customer checkCustomerLogin(String username, String password);
+    String updateCustomerProfile(Customer customer);
+}

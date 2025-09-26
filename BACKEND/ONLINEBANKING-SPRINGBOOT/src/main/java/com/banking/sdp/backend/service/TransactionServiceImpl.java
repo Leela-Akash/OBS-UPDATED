@@ -1,0 +1,94 @@
+package com.banking.sdp.backend.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.banking.sdp.backend.model.Transaction;
+import com.banking.sdp.backend.model.Customer;
+import com.banking.sdp.backend.repository.TransactionRepository;
+
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import java.io.ByteArrayOutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Stream;
+
+@Service
+public class TransactionServiceImpl implements TransactionService {
+
+    @Autowired
+    private TransactionRepository transactionRepository;
+
+    @Override
+    public Transaction addTransaction(Transaction transaction) {
+        return transactionRepository.save(transaction);
+    }
+
+    @Override
+    public List<Transaction> getAllTransactions() {
+        return transactionRepository.findAll();
+    }
+
+    @Override
+    public List<Transaction> getTransactionsByCustomer(Customer customer) {
+        return transactionRepository.findByCustomerOrderByTransactionDateDesc(customer);
+    }
+
+    @Override
+    public List<Transaction> getTransactionsByCustomerAndDateRange(Customer customer, LocalDateTime start, LocalDateTime end) {
+        return transactionRepository.findByCustomerAndTransactionDateBetweenOrderByTransactionDateDesc(customer, start, end);
+    }
+
+    @Override
+    public byte[] generatePdfStatement(Customer customer, LocalDateTime start, LocalDateTime end) throws Exception {
+        List<Transaction> txns = getTransactionsByCustomerAndDateRange(customer, start, end);
+
+        Document document = new Document();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PdfWriter.getInstance(document, out);
+
+        document.open();
+        Font title = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+        Paragraph p = new Paragraph("Bank Statement", title);
+        p.setAlignment(Element.ALIGN_CENTER);
+        document.add(p);
+        document.add(new Paragraph("Customer: " + customer.getFullName() + " (ID: " + customer.getId() + ")"));
+        document.add(new Paragraph("From: " + start.toLocalDate() + " To: " + end.toLocalDate()));
+        document.add(Chunk.NEWLINE);
+
+        PdfPTable table = new PdfPTable(5);
+        table.setWidthPercentage(100);
+        table.setWidths(new int[]{2, 3, 2, 2, 3});
+
+        Stream.of("Date", "Type", "Amount", "Description", "Customer ID").forEach(headerTitle -> {
+            PdfPCell header = new PdfPCell();
+            header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            header.setBorderWidth(2);
+            header.setPhrase(new Phrase(headerTitle));
+            table.addCell(header);
+        });
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        for (Transaction txn : txns) {
+            table.addCell(txn.getTransactionDate().format(formatter));
+            table.addCell(txn.getType());
+            table.addCell(txn.getAmount().toString());
+            table.addCell(txn.getDescription() == null ? "" : txn.getDescription());
+            table.addCell(String.valueOf(txn.getCustomer().getId()));
+        }
+
+        document.add(table);
+        document.close();
+        return out.toByteArray();
+    }
+
+    @Override
+    public Double calculateBalance(Customer customer) {
+        List<Transaction> txns = getTransactionsByCustomer(customer);
+        return txns.stream()
+                .mapToDouble(tx -> "Credit".equalsIgnoreCase(tx.getType()) ? tx.getAmount() : -tx.getAmount())
+                .sum();
+    }
+}

@@ -1,0 +1,23 @@
+package com.banking.sdp.backend.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.banking.sdp.backend.model.Staff;
+import com.banking.sdp.backend.repository.StaffRepository;
+
+@Service
+public class StaffServiceImpl implements StaffService {
+
+    @Autowired
+    private StaffRepository staffRepository;
+
+    @Override
+    public Staff checkStaffLogin(String username, String password) {
+        return staffRepository.findByUsernameAndPassword(username, password);
+    }
+
+    @Override
+    public Staff getStaffProfile(Long staffId) {
+        return staffRepository.findById(staffId).orElse(null);
+    }
+}

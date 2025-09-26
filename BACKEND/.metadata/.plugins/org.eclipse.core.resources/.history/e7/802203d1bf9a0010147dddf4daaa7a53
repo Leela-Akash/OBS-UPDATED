@@ -1,0 +1,50 @@
+package com.banking.sdp.backend.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import com.banking.sdp.backend.model.Transaction;
+import com.banking.sdp.backend.model.Customer;
+import com.banking.sdp.backend.service.TransactionService;
+import com.banking.sdp.backend.service.CustomerService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/transaction")
+@CrossOrigin("*")
+public class TransactionController {
+
+    @Autowired
+    private TransactionService transactionService;
+
+    @Autowired
+    private CustomerService customerService;
+
+    // Add transaction (customerId sent in request)
+    @PostMapping("/add/{customerId}")
+    public ResponseEntity<Transaction> addTransaction(@PathVariable Long customerId, @RequestBody Transaction transaction) {
+        Customer customer = customerService.getCustomerById(customerId);
+        if (customer == null) return ResponseEntity.badRequest().build();
+        transaction.setCustomer(customer);
+        transaction.setTransactionDate(java.time.LocalDateTime.now());
+        Transaction saved = transactionService.addTransaction(transaction);
+        return ResponseEntity.ok(saved);
+    }
+
+    // Get all transactions (Admin/Staff)
+    @GetMapping("/all")
+    public ResponseEntity<List<Transaction>> getAllTransactions() {
+        return ResponseEntity.ok(transactionService.getAllTransactions());
+    }
+
+    // Get transactions of a customer
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<Transaction>> getCustomerTransactions(@PathVariable Long customerId) {
+        Customer customer = customerService.getCustomerById(customerId);
+        if (customer == null) return ResponseEntity.notFound().build();
+        List<Transaction> list = transactionService.getTransactionsByCustomer(customer);
+        return ResponseEntity.ok(list);
+ 
+    }
+}

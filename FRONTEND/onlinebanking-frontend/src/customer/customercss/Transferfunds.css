@@ -1,0 +1,85 @@
+.transfer-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #f5f9ff;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  font-family: "Segoe UI", sans-serif;
+  text-align: center;
+}
+
+.transfer-container h2 {
+  color: #002147;
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.transfer-container p {
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.success-msg,
+.error-msg {
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.success-msg {
+  background: #e8f9f0;
+  color: #0a8754;
+}
+
+.error-msg {
+  background: #fdecea;
+  color: #b71c1c;
+}
+
+.transfer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.transfer-form label {
+  font-weight: 600;
+  color: #003366;
+  font-size: 14px;
+}
+
+.transfer-form input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.transfer-form input:focus {
+  border-color: #004aad;
+  box-shadow: 0 0 6px rgba(0, 74, 173, 0.2);
+  outline: none;
+}
+
+.transfer-btn {
+  margin-top: 10px;
+  padding: 14px;
+  background: linear-gradient(135deg, #004aad, #0077ff);
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.transfer-btn:hover {
+  background: linear-gradient(135deg, #003080, #0055cc);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 74, 173, 0.25);
+}

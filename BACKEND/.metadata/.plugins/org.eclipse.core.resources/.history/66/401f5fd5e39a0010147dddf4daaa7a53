@@ -1,0 +1,49 @@
+package com.banking.sdp.backend.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import com.banking.sdp.backend.model.Customer;
+import com.banking.sdp.backend.service.CustomerService;
+
+@RestController
+@RequestMapping("/customer")
+@CrossOrigin("*")
+public class CustomerController {
+
+    @Autowired
+    private CustomerService customerService;
+
+    @PostMapping("/register")
+    public ResponseEntity<String> registerCustomer(@RequestBody Customer customer) {
+        try {
+            return ResponseEntity.ok(customerService.registerCustomer(customer));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Registration Failed");
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Customer customer) {
+        Customer c = customerService.checkCustomerLogin(customer.getUsername(), customer.getPassword());
+        if (c != null) return ResponseEntity.ok(c);
+        else return ResponseEntity.status(401).body("Invalid Username or Password");
+    }
+
+    @PutMapping("/updateprofile")
+    public ResponseEntity<String> updateProfile(@RequestBody Customer customer) {
+        try {
+            return ResponseEntity.ok(customerService.updateCustomerProfile(customer));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Profile Update Failed");
+        }
+    }
+
+    // ✅ Get customer by ID (needed for frontend)
+    @GetMapping("/{customerId}")
+    public ResponseEntity<Customer> getCustomerById(@PathVariable Long customerId) {
+        Customer customer = customerService.getCustomerById(customerId);
+        if (customer == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(customer);
+    }
+}

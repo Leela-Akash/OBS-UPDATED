@@ -1,0 +1,8 @@
+@Repository
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+
+    List<Transaction> findByCustomerOrderByTransactionDateDesc(Customer customer);
+
+    List<Transaction> findByCustomerAndTransactionDateBetweenOrderByTransactionDateDesc(
+            Customer customer, java.time.LocalDateTime start, java.time.LocalDateTime end);
+}

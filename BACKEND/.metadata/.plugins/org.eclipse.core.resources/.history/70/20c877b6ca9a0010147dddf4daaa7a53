@@ -1,0 +1,30 @@
+package com.banking.sdp.backend.dto;
+
+import com.banking.sdp.backend.model.Transaction;
+import java.time.LocalDateTime;
+
+public class TransactionDTO {
+    private Long id;
+    private String customerName;
+    private String type;
+    private Double amount;
+    private String description;
+    private LocalDateTime transactionDate;
+
+    public TransactionDTO(Transaction txn) {
+        this.id = txn.getId();
+        this.customerName = txn.getCustomer() != null ? txn.getCustomer().getFullName() : "Unknown";
+        this.type = txn.getType();
+        this.amount = txn.getAmount();
+        this.description = txn.getDescription();
+        this.transactionDate = txn.getTransactionDate();
+    }
+
+    // Getters
+    public Long getId() { return id; }
+    public String getCustomerName() { return customerName; }
+    public String getType() { return type; }
+    public Double getAmount() { return amount; }
+    public String getDescription() { return description; }
+    public LocalDateTime getTransactionDate() { return transactionDate; }
+}
