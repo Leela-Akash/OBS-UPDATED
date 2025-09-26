@@ -15,7 +15,7 @@ services:
   backend:
     build:
       context: ./BACKEND/onlinebanking-backend
-      dockerfile: Dockerfile   # make sure there's a Dockerfile in this folder
+      dockerfile: backend.Dockerfile
     container_name: springboot
     ports:
       - "2025:2009"
@@ -28,10 +28,10 @@ services:
   frontend:
     build:
       context: ./FRONTEND/onlinebanking-frontend
-      dockerfile: Dockerfile   # make sure there's a Dockerfile in this folder
+      dockerfile: frontend.Dockerfile
     container_name: react
     ports:
-      - "3000:80"
+      - "3000:80"  
     depends_on:
       - backend
     restart: on-failure
