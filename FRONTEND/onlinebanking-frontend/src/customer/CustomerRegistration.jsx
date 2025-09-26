@@ -30,7 +30,6 @@ export default function CustomerRegistration() {
       const response = await axios.post(`${API_URL}/register`, formData);
       setMessage(response.data);
       setError("");
-      // Reset form
       setFormData({
         fullName: "",
         gender: "",
@@ -51,13 +50,14 @@ export default function CustomerRegistration() {
     <div className="register-container">
       <div className="register-form">
         <h3>Create Customer Account</h3>
-
         {message && <p className="success-message">{message}</p>}
         {error && <p className="error-message">{error}</p>}
 
         <form onSubmit={handleSubmit}>
+          {/* All input fields same as previous code */}
+          {/* fullName, gender, dob, email, username, password, phone, address */}
           <label htmlFor="fullName">Full Name</label>
-          <input type="text" id="fullName" value={formData.fullName} onChange={handleChange} required placeholder="Enter full name" />
+          <input type="text" id="fullName" value={formData.fullName} onChange={handleChange} required />
 
           <label htmlFor="gender">Gender</label>
           <select id="gender" value={formData.gender} onChange={handleChange} required>
@@ -71,19 +71,19 @@ export default function CustomerRegistration() {
           <input type="date" id="dob" value={formData.dob} onChange={handleChange} required />
 
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" value={formData.email} onChange={handleChange} required placeholder="Enter email" />
+          <input type="email" id="email" value={formData.email} onChange={handleChange} required />
 
           <label htmlFor="username">Username</label>
-          <input type="text" id="username" value={formData.username} onChange={handleChange} required placeholder="Choose username" />
+          <input type="text" id="username" value={formData.username} onChange={handleChange} required />
 
           <label htmlFor="password">Password</label>
-          <input type="password" id="password" value={formData.password} onChange={handleChange} required placeholder="Create password" />
+          <input type="password" id="password" value={formData.password} onChange={handleChange} required />
 
-          <label htmlFor="phone">Phone Number</label>
-          <input type="tel" id="phone" value={formData.phone} onChange={handleChange} required placeholder="Enter phone number" />
+          <label htmlFor="phone">Phone</label>
+          <input type="tel" id="phone" value={formData.phone} onChange={handleChange} required />
 
           <label htmlFor="address">Address</label>
-          <input type="text" id="address" value={formData.address} onChange={handleChange} required placeholder="Enter your address" />
+          <input type="text" id="address" value={formData.address} onChange={handleChange} required />
 
           <button type="submit">Create Account</button>
         </form>

@@ -4,7 +4,7 @@ import com.banking.sdp.backend.model.Customer;
 import java.util.List;
 
 public interface CustomerService {
-    
+
     String registerCustomer(Customer customer);
 
     Customer checkCustomerLogin(String username, String password);

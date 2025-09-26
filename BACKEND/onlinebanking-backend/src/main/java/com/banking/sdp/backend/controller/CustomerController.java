@@ -68,4 +68,10 @@ public class CustomerController {
         if (customer == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(customer);
     }
+
+    // Get all customers
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllCustomers() {
+        return ResponseEntity.ok(customerService.getAllCustomers());
+    }
 }

@@ -1,71 +1,79 @@
-package com.banking.sdp.backend.controller;
+package com.banking.sdp.backend.service;
 
-import com.banking.sdp.backend.model.Customer;
-import com.banking.sdp.backend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
+import com.banking.sdp.backend.model.Customer;
+import com.banking.sdp.backend.repository.CustomerRepository;
 
-@RestController
-@RequestMapping("/customer")
-@CrossOrigin("*")
-public class CustomerController {
+import java.util.List;
+
+@Service
+public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerRepository customerRepository;
 
-    // Registration endpoint
-    @PostMapping("/register")
-    public ResponseEntity<String> registerCustomer(@RequestBody Customer customer) {
-        String result = customerService.registerCustomer(customer);
-
-        if ("Customer Registered Successfully".equals(result)) {
-            return ResponseEntity.ok(result); // 200 OK
-        } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(result); // 409 Conflict
+    @Override
+    public String registerCustomer(Customer customer) {
+        if (customerRepository.existsByUsername(customer.getUsername())) {
+            return "Username already exists!";
         }
+        if (customerRepository.existsByEmail(customer.getEmail())) {
+            return "Email already exists!";
+        }
+        if (customerRepository.existsByPhone(customer.getPhone())) {
+            return "Phone number already exists!";
+        }
+
+        customerRepository.save(customer);
+        return "Customer Registered Successfully";
     }
 
-    // Login endpoint
-    @PostMapping("/login")
-    public ResponseEntity<?> loginCustomer(@RequestBody Customer customer) {
-        Customer loggedIn = customerService.checkCustomerLogin(
-                customer.getUsername(), customer.getPassword());
-
-        if (loggedIn != null) {
-            return ResponseEntity.ok(loggedIn); // 200 OK
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                 .body("Invalid username or password");
-        }
+    @Override
+    public Customer checkCustomerLogin(String username, String password) {
+        return customerRepository.findByUsernameAndPassword(username, password);
     }
 
-    // Get customer by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomer(@PathVariable Long id) {
-        Customer customer = customerService.getCustomerById(id);
-        if (customer != null) {
-            return ResponseEntity.ok(customer);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    @Override
+    public String updateCustomerProfile(Customer customer) {
+        Customer existing = customerRepository.findById(customer.getId()).orElse(null);
+        if (existing != null) {
+            if (!existing.getUsername().equals(customer.getUsername()) &&
+                customerRepository.existsByUsername(customer.getUsername())) {
+                return "Username already exists!";
+            }
+            if (!existing.getEmail().equals(customer.getEmail()) &&
+                customerRepository.existsByEmail(customer.getEmail())) {
+                return "Email already exists!";
+            }
+            if (!existing.getPhone().equals(customer.getPhone()) &&
+                customerRepository.existsByPhone(customer.getPhone())) {
+                return "Phone number already exists!";
+            }
+
+            existing.setFullName(customer.getFullName());
+            existing.setEmail(customer.getEmail());
+            existing.setUsername(customer.getUsername());
+            existing.setPassword(customer.getPassword());
+            existing.setPhone(customer.getPhone());
+            existing.setAddress(customer.getAddress());
+            existing.setDob(customer.getDob());
+            existing.setGender(customer.getGender());
+            existing.setAccountBalance(customer.getAccountBalance());
+
+            customerRepository.save(existing);
+            return "Customer Profile Updated Successfully";
         }
+        return "Customer Not Found";
     }
 
-    // Update customer profile
-    @PutMapping("/update")
-    public ResponseEntity<String> updateCustomer(@RequestBody Customer customer) {
-        String result = customerService.updateCustomerProfile(customer);
-        if ("Customer Profile Updated Successfully".equals(result)) {
-            return ResponseEntity.ok(result);
-        } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
-        }
+    @Override
+    public Customer getCustomerById(Long id) {
+        return customerRepository.findById(id).orElse(null);
     }
 
-    // Get all customers
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllCustomers() {
-        return ResponseEntity.ok(customerService.getAllCustomers());
+    @Override
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
     }
 }
