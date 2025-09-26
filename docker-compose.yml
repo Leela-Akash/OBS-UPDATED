@@ -13,7 +13,7 @@ services:
       - springboot-mysql-net
 
   backend:
-    image: leelaakash/onlinebank-backend:latest
+    image: leelaakash/onlinebanking-backend:latest
     container_name: springboot
     ports:
       - "2025:2009"
@@ -24,7 +24,7 @@ services:
       - springboot-mysql-net
 
   frontend:
-    image: leelaakash/onlinebank-frontend:latest
+    image: leelaakash/onlinebanking-frontend:latest
     container_name: react
     ports:
       - "3000:80"
