@@ -38,6 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
     public String updateCustomerProfile(Customer customer) {
         Customer existing = customerRepository.findById(customer.getId()).orElse(null);
         if (existing != null) {
+            // Optional: prevent duplicates during update
             if (!existing.getUsername().equals(customer.getUsername()) &&
                 customerRepository.existsByUsername(customer.getUsername())) {
                 return "Username already exists!";
