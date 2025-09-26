@@ -1,10 +1,9 @@
 import { useState } from "react";
-import "./customercss/CustomerLogin.css";  
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contextapi/AuthContext";
+import "./customercss/CustomerLogin.css";
 
-// API base URL from .env
 const API_URL = `${import.meta.env.VITE_API_URL}/customer`;
 
 export default function CustomerLogin() {
@@ -13,7 +12,7 @@ export default function CustomerLogin() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { setIsCustomerLoggedIn  } = useAuth();  
+  const { setIsCustomerLoggedIn } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -23,14 +22,13 @@ export default function CustomerLogin() {
     e.preventDefault();
     try {
       const res = await axios.post(`${API_URL}/login`, formData);
-      if (res.status === 200) {
-        sessionStorage.setItem("customer", JSON.stringify(res.data));
-        setIsCustomerLoggedIn (true);
-        navigate("/");
-      } else {
-        setMessage(res.data);
-      }
+      setMessage("");
+      setError("");
+      sessionStorage.setItem("customer", JSON.stringify(res.data));
+      setIsCustomerLoggedIn(true);
+      navigate("/");
     } catch (err) {
+      setMessage("");
       setError(err.response?.data || "Unexpected error occurred.");
     }
   };
@@ -44,28 +42,12 @@ export default function CustomerLogin() {
 
         <form onSubmit={handleSubmit}>
           <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            value={formData.username}
-            onChange={handleChange}
-            required
-            placeholder="Enter your username"
-          />
+          <input type="text" id="username" value={formData.username} onChange={handleChange} required placeholder="Enter your username" />
 
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            placeholder="Enter your password"
-          />
+          <input type="password" id="password" value={formData.password} onChange={handleChange} required placeholder="Enter your password" />
 
-          <button type="submit" className="signin-button">
-            Sign In
-          </button>
+          <button type="submit" className="signin-button">Sign In</button>
         </form>
 
         <p className="signup-link">
