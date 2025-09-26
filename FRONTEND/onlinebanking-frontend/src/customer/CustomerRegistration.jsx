@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "./customercss/CustomerRegistration.css";
 
 // Use Vite environment variable
+
 const API_URL = `${import.meta.env.VITE_API_URL}/customer`;
 
 export default function CustomerRegistration() {
