@@ -13,9 +13,7 @@ services:
       - springboot-mysql-net
 
   backend:
-    build:
-      context: ./BACKEND/onlinebanking-backend
-      dockerfile: backend.Dockerfile
+    image: leelaakash/onlinebank-backend:latest
     container_name: springboot
     ports:
       - "2025:2009"
@@ -26,12 +24,10 @@ services:
       - springboot-mysql-net
 
   frontend:
-    build:
-      context: ./FRONTEND/onlinebanking-frontend
-      dockerfile: frontend.Dockerfile
+    image: leelaakash/onlinebank-frontend:latest
     container_name: react
     ports:
-      - "3000:80"  
+      - "3000:80"
     depends_on:
       - backend
     restart: on-failure
