@@ -12,6 +12,8 @@ public interface CustomerService {
     String updateCustomerProfile(Customer customer);
 
     Customer getCustomerById(Long id);
+    
+    Customer getCustomerByAccountNumber(String accountNumber);
 
     List<Customer> getAllCustomers();
 }

@@ -8,6 +8,8 @@ import com.banking.sdp.backend.model.Admin;
 import com.banking.sdp.backend.model.Customer;
 import com.banking.sdp.backend.model.Staff;
 import com.banking.sdp.backend.service.AdminService;
+import com.banking.sdp.backend.dto.JwtResponse;
+import com.banking.sdp.backend.util.JwtUtil;
 
 @RestController
 @RequestMapping("/admin")
@@ -17,11 +19,19 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Admin admin) {
         Admin a = adminService.checkAdminLogin(admin.getUsername(), admin.getPassword());
-        if (a != null) return ResponseEntity.ok(a);
-        else return ResponseEntity.status(401).body("Invalid Username or Password");
+        if (a != null) {
+            String token = jwtUtil.generateToken(a.getUsername(), "ADMIN", 0L);
+            JwtResponse response = new JwtResponse(token, 0L, a.getUsername(), "ADMIN");
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(401).body("Invalid Username or Password");
+        }
     }
 
     @GetMapping("/customers")
@@ -57,5 +67,11 @@ public class AdminController {
     @GetMapping("/staffcount")
     public ResponseEntity<Long> getStaffCount() {
         return ResponseEntity.ok(adminService.getStaffCount());
+    }
+
+    // Get comprehensive system reports
+    @GetMapping("/reports")
+    public ResponseEntity<?> getReports() {
+        return ResponseEntity.ok(adminService.getSystemReports());
     }
 }

@@ -6,6 +6,7 @@ import com.banking.sdp.backend.model.Customer;
 import com.banking.sdp.backend.repository.CustomerRepository;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -25,8 +26,24 @@ public class CustomerServiceImpl implements CustomerService {
             return "Phone number already exists!";
         }
 
+        // Generate unique account number
+        String accountNumber = generateUniqueAccountNumber();
+        customer.setAccountNumber(accountNumber);
+        
         customerRepository.save(customer);
-        return "Customer Registered Successfully";
+        return "Customer Registered Successfully with Account Number: " + accountNumber;
+    }
+    
+    private String generateUniqueAccountNumber() {
+        Random random = new Random();
+        String accountNumber;
+        do {
+            // Generate 12-digit account number
+            long num = 100000000000L + random.nextInt(900000000);
+            accountNumber = String.valueOf(num);
+        } while (customerRepository.existsByAccountNumber(accountNumber));
+        
+        return accountNumber;
     }
 
     @Override
@@ -71,6 +88,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer getCustomerById(Long id) {
         return customerRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Customer getCustomerByAccountNumber(String accountNumber) {
+        return customerRepository.findByAccountNumber(accountNumber);
     }
 
     @Override

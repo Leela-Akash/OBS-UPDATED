@@ -3,13 +3,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #003366; 
-  padding: 15px 25px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1.25rem 2rem;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   position: sticky;
   top: 0;
   z-index: 100;
+  backdrop-filter: blur(10px);
 }
 
 /* Logo / Brand */
@@ -40,25 +41,30 @@
 
 .admin-navbar .nav-links a:hover,
 .admin-navbar .nav-links a.active {
-  background-color: #66bb6a;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   color: #fff;
 }
 
 /* Logout icon only */
 .admin-navbar .logout-btn {
-  background: none;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   border: none;
   color: white;
   cursor: pointer;
   font-size: 20px;
   display: flex;
   align-items: center;
-  padding: 4px;
+  padding: 0.5rem;
+  border-radius: 10px;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3);
 }
 
 .admin-navbar .logout-btn:hover {
-  color: #b71c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
 }
 /* Profile avatar in navbar */
 .navbar-avatar {
@@ -82,4 +88,21 @@
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
+}
+
+/* Notification Badge */
+.notification-badge {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  margin-left: 0.5rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
 }

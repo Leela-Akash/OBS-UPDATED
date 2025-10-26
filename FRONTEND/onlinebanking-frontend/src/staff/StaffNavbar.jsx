@@ -27,6 +27,9 @@ export default function StaffNavBar() {
 
   const handleLogout = () => {
     sessionStorage.clear();
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userRole");
     setIsStaffLoggedIn(false);
     navigate("/stafflogin", { replace: true });
   };

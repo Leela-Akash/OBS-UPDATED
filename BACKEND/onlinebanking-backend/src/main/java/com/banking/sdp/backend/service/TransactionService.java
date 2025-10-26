@@ -14,4 +14,10 @@ public interface TransactionService {
     byte[] generatePdfStatement(Customer customer, LocalDateTime start, LocalDateTime end) throws Exception;
 
     Double calculateBalance(Customer customer);
+    
+    // Fund transfer between customers
+    String transferFunds(Long fromCustomerId, Long toCustomerId, Double amount) throws Exception;
+    
+    // Fund transfer using account numbers
+    String transferFundsByAccountNumber(Long fromCustomerId, String toAccountNumber, Double amount) throws Exception;
 }

@@ -8,8 +8,12 @@ import com.banking.sdp.backend.model.Customer;
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Customer findByUsernameAndPassword(String username, String password);
 
+    // Find by account number
+    Customer findByAccountNumber(String accountNumber);
+
     // Duplicate validations
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
     boolean existsByPhone(String phone);
+    boolean existsByAccountNumber(String accountNumber);
 }

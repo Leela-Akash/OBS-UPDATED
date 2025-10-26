@@ -22,6 +22,9 @@ export default function AdminNavBar() {
 
   const handleLogout = () => {
     sessionStorage.clear();
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userRole");
     setIsAdminLoggedIn(false);
     setIsStaffLoggedIn(false);
     setIsCustomerLoggedIn(false);

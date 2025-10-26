@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.banking.sdp.backend.model.Customer;
 import com.banking.sdp.backend.service.CustomerService;
+import com.banking.sdp.backend.dto.JwtResponse;
+import com.banking.sdp.backend.util.JwtUtil;
 
 @RestController
 @RequestMapping("/customer")
@@ -15,6 +17,9 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     // Registration
     @PostMapping("/register")
@@ -33,12 +38,17 @@ public class CustomerController {
         }
     }
 
-    // Login
+    // Login with JWT
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Customer customer) {
         Customer c = customerService.checkCustomerLogin(customer.getUsername(), customer.getPassword());
-        if (c != null) return ResponseEntity.ok(c);
-        else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Username or Password");
+        if (c != null) {
+            String token = jwtUtil.generateToken(c.getUsername(), "CUSTOMER", c.getId());
+            JwtResponse response = new JwtResponse(token, c.getId(), c.getUsername(), "CUSTOMER");
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Username or Password");
+        }
     }
 
     // Update Profile

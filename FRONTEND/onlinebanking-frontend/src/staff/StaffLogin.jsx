@@ -23,11 +23,19 @@ export default function StaffLogin() {
     try {
       const res = await axios.post(`${API_URL}/login`, formData);
       if (res.status === 200) {
-        const staff = res.data;
-
-        // ✅ Save logged-in staff in sessionStorage
-        sessionStorage.setItem("staff", JSON.stringify(staff));
-        sessionStorage.setItem("staffId", staff.id); // for profile fetch
+        // JWT login - store token and user info
+        const { token, id, username, role } = res.data;
+        localStorage.setItem("token", token);
+        localStorage.setItem("userId", id);
+        localStorage.setItem("userRole", role);
+        
+        // Get full staff data
+        try {
+          const staffRes = await axios.get(`${API_URL}/profile/${id}`);
+          sessionStorage.setItem("staff", JSON.stringify(staffRes.data));
+        } catch (err) {
+          sessionStorage.setItem("staff", JSON.stringify({ id, username }));
+        }
 
         setIsStaffLoggedIn(true);
         setMessage("Login successful!");

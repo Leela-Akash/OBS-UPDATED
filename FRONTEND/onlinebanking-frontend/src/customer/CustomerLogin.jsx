@@ -21,14 +21,26 @@ export default function CustomerLogin() {
     e.preventDefault();
     try {
       const res = await axios.post(`${API_URL}/login`, formData);
-      // Successful login
-      sessionStorage.setItem("customer", JSON.stringify(res.data));
+      // JWT login - store token and user info
+      const { token, id, username, role } = res.data;
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", id);
+      localStorage.setItem("userRole", role);
+      
+      // Get full customer data
+      try {
+        const customerRes = await axios.get(`${API_URL}/${id}`);
+        sessionStorage.setItem("customer", JSON.stringify(customerRes.data));
+      } catch (err) {
+        // If fetch fails, store basic info
+        sessionStorage.setItem("customer", JSON.stringify({ id, username }));
+      }
+      
       setIsCustomerLoggedIn(true);
-      setError(""); // clear previous errors
-      navigate("/"); // redirect to home/dashboard
+      setError("");
+      navigate("/");
     } catch (err) {
-      // Handle login errors
-      setError(err.response?.data || "Invalid Username or Password");
+      setError(err.response?.data?.error || err.response?.data || "Invalid Username or Password");
     }
   };
 

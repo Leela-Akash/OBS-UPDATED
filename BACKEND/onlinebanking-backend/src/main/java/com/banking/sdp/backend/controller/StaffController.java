@@ -9,6 +9,8 @@ import com.banking.sdp.backend.model.Customer;
 import com.banking.sdp.backend.model.Transaction;
 import com.banking.sdp.backend.service.TransactionService;
 import com.banking.sdp.backend.service.CustomerService;
+import com.banking.sdp.backend.dto.JwtResponse;
+import com.banking.sdp.backend.util.JwtUtil;
 
 import java.util.List;
 
@@ -26,12 +28,20 @@ public class StaffController {
     @Autowired
     private TransactionService transactionService;
 
-    // Staff login
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    // Staff login with JWT
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Staff staff) {
         Staff s = staffService.checkStaffLogin(staff.getUsername(), staff.getPassword());
-        if (s != null) return ResponseEntity.ok(s);
-        else return ResponseEntity.status(401).body("Invalid Username or Password");
+        if (s != null) {
+            String token = jwtUtil.generateToken(s.getUsername(), "STAFF", s.getId());
+            JwtResponse response = new JwtResponse(token, s.getId(), s.getUsername(), "STAFF");
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(401).body("Invalid Username or Password");
+        }
     }
 
     // Get staff profile

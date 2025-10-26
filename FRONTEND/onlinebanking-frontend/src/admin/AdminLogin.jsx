@@ -25,7 +25,13 @@ export default function AdminLogin() {
     try {
       const response = await axios.post(`${API_URL}/login`, formData);
       if (response.status === 200) {
-        sessionStorage.setItem("admin", JSON.stringify(response.data));
+        // JWT login - store token and user info
+        const { token, id, username, role } = response.data;
+        localStorage.setItem("token", token);
+        localStorage.setItem("userId", id);
+        localStorage.setItem("userRole", role);
+        sessionStorage.setItem("admin", JSON.stringify({ id, username, role }));
+        
         setIsAdminLoggedIn(true);
         navigate("/");
       } else {

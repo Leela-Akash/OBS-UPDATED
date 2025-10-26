@@ -83,4 +83,36 @@ public class TransactionController {
         List<Transaction> allTxns = transactionService.getAllTransactions();
         return ResponseEntity.ok(allTxns);
     }
+
+    // Transfer funds between customers (by ID)
+    @PostMapping("/transfer")
+    public ResponseEntity<?> transferFunds(
+            @RequestParam Long fromCustomerId,
+            @RequestParam Long toCustomerId,
+            @RequestParam Double amount) {
+        try {
+            String result = transactionService.transferFunds(fromCustomerId, toCustomerId, amount);
+            return ResponseEntity.ok(Map.of("message", result));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", "Transfer failed: " + e.getMessage()));
+        }
+    }
+
+    // Transfer funds using account number
+    @PostMapping("/transfer/by-account")
+    public ResponseEntity<?> transferFundsByAccount(
+            @RequestParam Long fromCustomerId,
+            @RequestParam String toAccountNumber,
+            @RequestParam Double amount) {
+        try {
+            String result = transactionService.transferFundsByAccountNumber(fromCustomerId, toAccountNumber, amount);
+            return ResponseEntity.ok(Map.of("message", result));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", "Transfer failed: " + e.getMessage()));
+        }
+    }
 }
