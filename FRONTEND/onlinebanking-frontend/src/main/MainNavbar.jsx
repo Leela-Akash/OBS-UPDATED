@@ -34,7 +34,7 @@ export default function MainNavBar() {
   };
 
   return (
-    <div className="app-container">
+    <div className="app-container" style={{ width: '100%', margin: 0, padding: 0 }}>
       <nav className="navbar">
         <div className="logo">🏦 OnlineBank</div>
 

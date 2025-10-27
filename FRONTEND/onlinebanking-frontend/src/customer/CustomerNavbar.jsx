@@ -79,25 +79,23 @@ export default function CustomerNavBar() {
             Notifications
             {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
           </NavLink>
-
-          
-  
-          <NavLink to="/update">Update Profile</NavLink>
-  <NavLink to="/profile">
-  <FaUserCircle className="navbar-icon" />
-</NavLink>
-
-          <button className="logout-btn" onClick={handleLogout}>
-            <FaSignOutAlt />
-          </button>
-          
         </div>
 
-     {customer && (
-  <span className="welcome" style={{ color: 'white', fontWeight: 'bold' }}>
-    Welcome, {customer.fullName}
-  </span>
-)}
+        <div className="navbar-right">
+          {customer && (
+            <span className="welcome-text">
+              Welcome, {customer.fullName}
+            </span>
+          )}
+          
+          <NavLink to="/profile" className="profile-icon-link">
+            <FaUserCircle />
+          </NavLink>
+
+          <button className="logout-btn-icon" onClick={handleLogout}>
+            <FaSignOutAlt />
+          </button>
+        </div>
 
       </nav>
 

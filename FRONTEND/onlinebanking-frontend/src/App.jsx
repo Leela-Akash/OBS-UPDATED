@@ -10,7 +10,7 @@ function AppContent() {
   const { isAdminLoggedIn, isCustomerLoggedIn, isStaffLoggedIn } = useAuth();
 
   return (
-    <div>
+    <div style={{ width: '100%', margin: 0, padding: 0 }}>
       <BrowserRouter>
         {isAdminLoggedIn ? (
           <AdminNavbar/>
